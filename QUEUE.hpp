@@ -1,27 +1,27 @@
-#ifndef FIFO_H
-#define FIFO_H
+#ifndef QUEUE_H
+#define QUEUE_H
 
 #include <iostream>
 #include "Vector/Vector.h"
 
-enum FIFO_STATUS {
-    FIFO_FULL,
-    FIFO_EMPTY,
-    FIFO_GOOD
+enum QUEUE_STATUS {
+    QUEUE_FULL,
+    QUEUE_EMPTY,
+    QUEUE_GOOD
 };
 
 template<class T>
-class FIFO { /// essentially a circular queue
+class QUEUE { /// essentially a circular queue
 public:
-    explicit FIFO(int s);
+    explicit QUEUE(int s);
 
     T& operator[](int i);
-    FIFO_STATUS push(const T& item); // copy constructor
-    //FIFO& operator=(const FIFO& a);
+    QUEUE_STATUS push(const T& item); // copy constructor
+    //QUEUE& operator=(const QUEUE& a);
     
     T pop();
 
-    FIFO_STATUS fifo_status();
+    QUEUE_STATUS queue_status();
 
     int size();
     int free_space();
@@ -34,7 +34,7 @@ private:
 };
 
 template<>
-FIFO<Vector<double>>::FIFO(int s) {
+QUEUE<Vector<double>>::QUEUE(int s) {
     elem = new Vector<double>[s];
     sz = s;
     nextFree=0;
@@ -43,7 +43,7 @@ FIFO<Vector<double>>::FIFO(int s) {
 
 
 template<class T>
-FIFO<T>::FIFO(int s) {
+QUEUE<T>::QUEUE(int s) {
     elem = new T[s];
     sz = s;
     nextFree=0;
@@ -51,15 +51,15 @@ FIFO<T>::FIFO(int s) {
 }
 
 template<class T>
-T &FIFO<T>::operator[](int i) {
+T &QUEUE<T>::operator[](int i) {
     return elem[i%sz]; // if the index is larger than the sz, it wraps around;
 }
 
 template<class T>
-FIFO_STATUS FIFO<T>::push(const T& item) {
-    if (fifo_status()==FIFO_FULL) {
+QUEUE_STATUS QUEUE<T>::push(const T& item) {
+    if (queue_status()==QUEUE_FULL) {
         // throw std::length_error("NA"); // throw does not work with arduino :(
-        return FIFO_FULL; // status code
+        return QUEUE_FULL; // status code
     }
     // otherwise:
     elem[nextFree] = item;
@@ -69,17 +69,17 @@ FIFO_STATUS FIFO<T>::push(const T& item) {
     else{
         nextFree = (++nextFree) % sz; // wrap around /:)
     }
-    return FIFO_GOOD;
+    return QUEUE_GOOD;
 }
 
 template<class T>
-T FIFO<T>::pop() {
-    if (fifo_status()==FIFO_EMPTY) {
-        return FIFO_EMPTY;
+T QUEUE<T>::pop() {
+    if (queue_status()==QUEUE_EMPTY) {
+        return QUEUE_EMPTY;
     }
     // otherwise
     T r = elem[endPointer];
-    if (fifo_status()==FIFO_FULL) {
+    if (queue_status()==QUEUE_FULL) {
         nextFree=endPointer;
     }
     endPointer = (++endPointer) % sz; // wrap around /:)
@@ -87,25 +87,25 @@ T FIFO<T>::pop() {
 }
 
 template<class T>
-FIFO_STATUS FIFO<T>::fifo_status() {
+QUEUE_STATUS QUEUE<T>::queue_status() {
     if (nextFree==endPointer) {
-        return FIFO_EMPTY; // fifo empty
+        return QUEUE_EMPTY; // queue empty
     }
-    else if (nextFree == -1) { // when the FIFO is full, there is no "next free" location.
-        return FIFO_FULL; // fifo full
+    else if (nextFree == -1) { // when the QUEUE is full, there is no "next free" location.
+        return QUEUE_FULL; // queue full
     }
-    // otherwise, return FIFO_GOOD
-    return FIFO_GOOD;
+    // otherwise, return QUEUE_GOOD
+    return QUEUE_GOOD;
 }
 
 template<class T>
-int FIFO<T>::size() {
+int QUEUE<T>::size() {
     return sz;
 }
 
 template<class T>
-int FIFO<T>::free_space() {
-    if (fifo_status()==FIFO_FULL){
+int QUEUE<T>::free_space() {
+    if (queue_status()==QUEUE_FULL){
         return 0;
     }
     else if (nextFree>=endPointer) {
@@ -120,15 +120,15 @@ int FIFO<T>::free_space() {
 
 
 template<>
-Vector<double> &FIFO<Vector<double>>::operator[](int i) {
+Vector<double> &QUEUE<Vector<double>>::operator[](int i) {
     return elem[i]; // if the index is larger than the sz, it wraps around;
 }
 
 template<>
-FIFO_STATUS FIFO<Vector<double>>::push(const Vector<double>& item) {
-    if (fifo_status()==FIFO_FULL) {
+QUEUE_STATUS QUEUE<Vector<double>>::push(const Vector<double>& item) {
+    if (queue_status()==QUEUE_FULL) {
         // throw std::length_error("NA"); // throw does not work with arduino :(
-        return FIFO_FULL; // status code
+        return QUEUE_FULL; // status code
     }
     // otherwise:
     elem[nextFree] = item;
@@ -138,18 +138,18 @@ FIFO_STATUS FIFO<Vector<double>>::push(const Vector<double>& item) {
     else{
         nextFree = (++nextFree) % sz; // wrap around /:)
     }
-    return FIFO_GOOD;
+    return QUEUE_GOOD;
 }
 
 template<>
-Vector<double> FIFO<Vector<double>>::pop() {
-    if (fifo_status()==FIFO_EMPTY) {
-        Vector<double> rv = {FIFO_EMPTY, FIFO_EMPTY, FIFO_EMPTY};
+Vector<double> QUEUE<Vector<double>>::pop() {
+    if (queue_status()==QUEUE_EMPTY) {
+        Vector<double> rv = {QUEUE_EMPTY, QUEUE_EMPTY, QUEUE_EMPTY};
         return rv;
     }
     // otherwise
     Vector<double> r = elem[endPointer];
-    if (fifo_status()==FIFO_FULL) {
+    if (queue_status()==QUEUE_FULL) {
         nextFree=endPointer;
     }
     endPointer = (++endPointer) % sz; // wrap around /:)
@@ -158,4 +158,4 @@ Vector<double> FIFO<Vector<double>>::pop() {
 
 
 
-#endif //FIFO_H
+#endif //QUEUE_H
