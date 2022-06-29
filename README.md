@@ -16,5 +16,7 @@ if (a == FIFO_EMPTY) {
 else {
         std::cout<<a<<std::endl; // prints 3.14
 }
+
+FIFO<Vector<double>> accFIFO(256); // Using Vector class default constructor
 ```
 
