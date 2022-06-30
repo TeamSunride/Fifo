@@ -26,6 +26,7 @@ public:
 
     int size();
     int free_space();
+    ~Fifo() { delete[] elem; } // destructor
 
 private:
     T* elem;

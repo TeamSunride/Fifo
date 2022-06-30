@@ -1,6 +1,11 @@
 {
-  "name": "FIFO",
+  "name": "Fifo",
   "version": "1.0.0",
-  "dependencies": {
-  }
+  "description": "A FIFO class designed to be used with arduino, but could be used anywhere I suppose.",
+  "keywords" : ["fifo", "queue", "queueing", "queueing system", "queueing system arduino"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/robosam2003/Fifo"
+  },
+    "author": "robosam2003"
 }
