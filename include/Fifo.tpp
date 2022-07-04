@@ -81,16 +81,16 @@ int Fifo<T>::free_space() {
 }
 
 
-#ifdef VECTOR_LIBRARY_H
+//#ifdef VECTOR_LIBRARY_H
 #include "Vector.h"
 
 
-template<>
+template<> inline
 Vector<double> &Fifo<Vector<double>>::operator[](int i) {
     return elem[i]; // if the index is larger than the sz, it wraps around;
 }
 
-template<>
+template<> inline
 Fifo_STATUS Fifo<Vector<double>>::push(const Vector<double>& item) {
     if (fifo_status()==Fifo_FULL) {
         // throw std::length_error("NA"); // throw does not work with arduino :(
@@ -107,19 +107,21 @@ Fifo_STATUS Fifo<Vector<double>>::push(const Vector<double>& item) {
     return Fifo_GOOD;
 }
 
-template<>
+template<> inline
 Vector<double> Fifo<Vector<double>>::pop() {
     if (fifo_status()==Fifo_EMPTY) {
         Vector<double> rv = {Fifo_EMPTY, Fifo_EMPTY, Fifo_EMPTY};
         return rv;
     }
     // otherwise
-    Vector<double> r = elem[endPointer];
+    Vector<double> r = {0,0,0};
+    r = {elem[endPointer][0], elem[endPointer][1], elem[endPointer][2]};
     if (fifo_status()==Fifo_FULL) {
         nextFree=endPointer;
     }
     endPointer = (++endPointer) % sz; // wrap around /:)
+
     return r;
 }
 
-#endif
+//#endif

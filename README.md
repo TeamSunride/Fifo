@@ -18,6 +18,6 @@ else {
         std::cout<<a<<std::endl; // prints 3.14
 }
 
-FIFO<Vector<double>> accFIFO(256); // Using Vector class default constructor
+Fifo<Vector<double>> accFIFO(256); // Using Vector class default constructor
 ```
 
