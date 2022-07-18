@@ -14,9 +14,12 @@ template<class T>
 class Fifo { /// essentially a circular fifo
 public:
     explicit Fifo(int s);
+    Fifo(std::initializer_list<T> lst);
+
+    // TODO: copy and move constructors
 
     T& operator[](int i);
-    Fifo_STATUS push(const T& item); // copy constructor
+    Fifo_STATUS push(const T& item);
     //Fifo& operator=(const Fifo& a);
 
     // TODO: iterators?
@@ -30,9 +33,9 @@ public:
 
 private:
     T* elem;
-    int nextFree;
-    int endPointer;
-    int sz;
+    unsigned int nextFree;
+    unsigned int endPointer;
+    unsigned int sz;
 };
 
 #include "Fifo.tpp" // implementation file

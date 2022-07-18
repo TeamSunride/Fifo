@@ -3,6 +3,7 @@
 //
 
 #include "Fifo.h"
+#include "Vector.h"
 
 
 
@@ -13,9 +14,18 @@ Fifo<T>::Fifo(int s) {
     nextFree=0;
     endPointer=0;
 }
+template<class T>
+Fifo<T>::Fifo(std::initializer_list<T> lst) {
+    elem = new T[lst.size()];
+    sz = static_cast<unsigned int>(lst.size());
+    for (int i=0;i<sz;i++) elem[i] = lst.begin()[i];
+    nextFree=0;
+    endPointer=0;
+}
 
 template<class T>
-T &Fifo<T>::operator[](int i) {
+T &Fifo<T>
+::operator[](int i) {
     return elem[i%sz]; // if the index is larger than the sz, it wraps around;
 }
 
@@ -81,17 +91,17 @@ int Fifo<T>::free_space() {
 }
 
 
-//#ifdef VECTOR_LIBRARY_H
+#ifdef VECTOR_LIBRARY_H
 #include "Vector.h"
 
 
 template<> inline
-Vector<double> &Fifo<Vector<double>>::operator[](int i) {
+Vector<double, 3> &Fifo<Vector<double, 3>>::operator[](int i) {
     return elem[i]; // if the index is larger than the sz, it wraps around;
 }
 
 template<> inline
-Fifo_STATUS Fifo<Vector<double>>::push(const Vector<double>& item) {
+Fifo_STATUS Fifo<Vector<double, 3>>::push(const Vector<double, 3>& item) {
     if (fifo_status()==Fifo_FULL) {
         // throw std::length_error("NA"); // throw does not work with arduino :(
         return Fifo_FULL; // status code
@@ -108,13 +118,13 @@ Fifo_STATUS Fifo<Vector<double>>::push(const Vector<double>& item) {
 }
 
 template<> inline
-Vector<double> Fifo<Vector<double>>::pop() {
+Vector<double, 3> Fifo<Vector<double, 3>>::pop() {
     if (fifo_status()==Fifo_EMPTY) {
-        Vector<double> rv = {Fifo_EMPTY, Fifo_EMPTY, Fifo_EMPTY};
+        Vector<double, 3> rv = {Fifo_EMPTY, Fifo_EMPTY, Fifo_EMPTY};
         return rv;
     }
     // otherwise
-    Vector<double> r = {0,0,0};
+    Vector<double, 3> r = {0,0,0};
     r = {elem[endPointer][0], elem[endPointer][1], elem[endPointer][2]};
     if (fifo_status()==Fifo_FULL) {
         nextFree=endPointer;
@@ -124,4 +134,6 @@ Vector<double> Fifo<Vector<double>>::pop() {
     return r;
 }
 
-//#endif
+
+
+#endif
