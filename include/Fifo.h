@@ -3,17 +3,25 @@
 
 #include <iostream>
 
+//#define FIFO_FULL
+//#define FIFO_EMPTY
+//#define FIFO_GOOD
 
-enum Fifo_STATUS {
+
+enum class Fifo_STATUS {
     Fifo_FULL,
     Fifo_EMPTY,
     Fifo_GOOD
 };
 
-template<class T>
+template<class T, unsigned int sz>
 class Fifo { /// essentially a circular fifo
+protected:
+    T elem[sz];
+    unsigned int nextFree;
+    unsigned int endPointer;
 public:
-    explicit Fifo(int s);
+    explicit Fifo();
     Fifo(std::initializer_list<T> lst);
 
     // TODO: copy and move constructors
@@ -29,13 +37,7 @@ public:
 
     int size();
     int free_space();
-    ~Fifo() { delete[] elem; } // destructor
-
-private:
-    T* elem;
-    unsigned int nextFree;
-    unsigned int endPointer;
-    unsigned int sz;
+    ~Fifo() = default; // destructor
 };
 
 #include "Fifo.tpp" // implementation file
