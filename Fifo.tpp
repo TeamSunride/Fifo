@@ -7,27 +7,47 @@
 
 
 
-template<class T, unsigned int sz>
-Fifo<T, sz>::Fifo() {
+template<class T>
+Fifo<T>::Fifo(int s) {
+    elem = new T[s]; // allocates on the free store (the heap)
+    sz = s;
     nextFree=0;
     endPointer=0;
 }
 
-template<class T, unsigned int sz>
-Fifo<T, sz>::Fifo(std::initializer_list<T> lst) {
+template<class T>
+Fifo<T>::Fifo(std::initializer_list<T> lst) {
+    elem = new T[lst.size()];
+    sz = static_cast<unsigned int>(lst.size());
     for (int i=0;i<sz;i++)
         elem[i] = lst.begin()[i];
     nextFree=0;
     endPointer=0;
 }
 
-template<class T, unsigned int sz>
-T &Fifo<T, sz>::operator[](int i) {
+template<class T>
+T &Fifo<T>::operator[](int i) {
     return elem[i%sz]; // if the index is larger than the sz, it wraps around;
 }
 
-template<class T, unsigned int sz>
-Fifo_STATUS Fifo<T, sz>::push(const T& item) { // returns the status of the fifo
+template<class T>
+T &Fifo<T>::operator[](int i) const {
+    return elem[i%sz]; // if the index is larger than the sz, it wraps around;
+}
+
+template<class T>
+T& Fifo<T>::atFifoIndex(int i) {
+    return elem[(endPointer+i) % sz];
+}
+
+template<class T>
+T& Fifo<T>::atFifoIndex(int i) const{
+    return elem[(endPointer+i) % sz];
+}
+
+
+template<class T>
+Fifo_STATUS Fifo<T>::push(const T& item) {
     if (fifo_status()==Fifo_STATUS::Fifo_FULL) {
         // throw std::length_error("NA"); // throw does not work with arduino :(
         return Fifo_STATUS::Fifo_FULL; // status code
@@ -43,12 +63,10 @@ Fifo_STATUS Fifo<T, sz>::push(const T& item) { // returns the status of the fifo
     return Fifo_STATUS::Fifo_GOOD;
 }
 
-template<class T, unsigned int sz>
-T Fifo<T, sz>::pop() { /// Note: You should check the status of the fifo before calling this function
+template<class T>
+T Fifo<T>::pop() { /// Note: You should check the status of the fifo before calling this function
     if (fifo_status()==Fifo_STATUS::Fifo_EMPTY) {
-        //throw std::length_error("NA"); // throw does not work with arduino :(
-        // return {Fifo_EMPTY};
-        return {0}; // return nothing
+        return {0}; // return 0
     }
     // otherwise
     T r = elem[endPointer];
@@ -59,8 +77,8 @@ T Fifo<T, sz>::pop() { /// Note: You should check the status of the fifo before 
     return r;
 }
 
-template<class T, unsigned int sz>
-Fifo_STATUS Fifo<T, sz>::fifo_status() {
+template<class T>
+Fifo_STATUS Fifo<T>::fifo_status() const {
     if (nextFree==endPointer) {
         return Fifo_STATUS::Fifo_EMPTY; // fifo empty
     }
@@ -71,13 +89,13 @@ Fifo_STATUS Fifo<T, sz>::fifo_status() {
     return Fifo_STATUS::Fifo_GOOD;
 }
 
-template<class T, unsigned int sz>
-int Fifo<T, sz>::size() {
+template<class T>
+int Fifo<T>::size() const{
     return sz;
 }
 
-template<class T, unsigned int sz>
-int Fifo<T, sz>::free_space() {
+template<class T>
+int Fifo<T>::free_space() const{
     if (fifo_status()==Fifo_STATUS::Fifo_FULL){
         return 0;
     }
@@ -89,8 +107,8 @@ int Fifo<T, sz>::free_space() {
     }
 }
 
-/*
 
+/*
 #ifdef VECTOR_LIBRARY_H
 #include "Vector.h"
 
@@ -133,5 +151,7 @@ Vector<double, 3> Fifo<Vector<double, 3>>::pop() {
 
     return r;
 }
-#endif
-*/
+
+
+
+#endif*/

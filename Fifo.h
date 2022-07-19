@@ -3,10 +3,6 @@
 
 #include <iostream>
 
-//#define FIFO_FULL
-//#define FIFO_EMPTY
-//#define FIFO_GOOD
-
 
 enum class Fifo_STATUS {
     Fifo_FULL,
@@ -14,30 +10,37 @@ enum class Fifo_STATUS {
     Fifo_GOOD
 };
 
-template<class T, unsigned int sz>
+template<class T>
 class Fifo { /// essentially a circular fifo
-protected:
-    T elem[sz];
-    unsigned int nextFree;
-    unsigned int endPointer;
+private:
+    T* elem;
+    int nextFree;
+    int endPointer;
+    unsigned int sz;
 public:
-    explicit Fifo();
+    explicit Fifo(int s);
     Fifo(std::initializer_list<T> lst);
 
     // TODO: copy and move constructors
 
     T& operator[](int i);
+    T& operator[](int i) const;
+
+    T& atFifoIndex(int i);
+    T& atFifoIndex(int i) const;
+
     Fifo_STATUS push(const T& item);
     //Fifo& operator=(const Fifo& a);
 
     // TODO: iterators?
     T pop();
 
-    Fifo_STATUS fifo_status();
+    Fifo_STATUS fifo_status() const;
 
-    int size();
-    int free_space();
-    ~Fifo() = default; // destructor
+    int size() const;
+    int free_space() const;
+
+    ~Fifo() { delete[] elem; } // destructor
 };
 
 #include "Fifo.tpp" // implementation file
