@@ -77,6 +77,26 @@ T Fifo<T>::pop() { /// Note: You should check the status of the fifo before call
     return r;
 }
 
+
+template<class T>
+T Fifo<T>::peek() const { // GitHub copilot for the win
+    if (fifo_status()==Fifo_STATUS::Fifo_EMPTY) {
+        return {0}; // return 0
+    }
+    // otherwise
+    return elem[endPointer];
+}
+
+template<class T>
+T Fifo<T>::peekBack(int i) const {
+    if (fifo_status()==Fifo_STATUS::Fifo_EMPTY) {
+        return {0}; // return 0
+    }
+    // otherwise
+    return elem[(endPointer+i) % sz];
+}
+
+
 template<class T>
 Fifo_STATUS Fifo<T>::fifo_status() const {
     if (nextFree==endPointer) {
@@ -106,6 +126,8 @@ int Fifo<T>::free_space() const{
         return endPointer-nextFree;
     }
 }
+
+
 
 
 /*
