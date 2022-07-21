@@ -75,7 +75,7 @@ T Fifo<T, sz>::pop() { /// Note: You should check the status of the fifo before 
 }
 
 template<class T, unsigned int sz>
-T Fifo<T, sz>::peek() const {
+T Fifo<T, sz>::peekBack() const {
     if (fifo_status()==Fifo_STATUS::Fifo_EMPTY) {
         return {0}; // return 0
     }
@@ -90,6 +90,25 @@ T Fifo<T, sz>::peekBack(int i) const {
     }
     // otherwise
     return elem[(endPointer+i) % sz];
+}
+
+
+template<class T, unsigned int sz>
+T Fifo<T, sz>::peekFront() const {
+    if (fifo_status()==Fifo_STATUS::Fifo_EMPTY) {
+        return {0}; // return 0
+    }
+    // otherwise
+    return elem[nextFree-1];
+}
+
+template<class T, unsigned int sz>
+T Fifo<T, sz>::peekFront(int i) const {
+    if (fifo_status()==Fifo_STATUS::Fifo_EMPTY) {
+        return {0}; // return 0
+    }
+    // otherwise
+    return elem[(nextFree-1-i) % sz];
 }
 
 template<class T, unsigned int sz>

@@ -35,8 +35,13 @@ public:
     // TODO: iterators?
     T pop();
 
-    T peek() const;
+    T peekBack() const;
     T peekBack(int i) const;
+
+    // front
+    T peekFront() const;
+    T peekFront(int i) const;
+
 
     Fifo_STATUS fifo_status() const;
 
