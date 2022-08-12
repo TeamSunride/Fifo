@@ -141,49 +141,37 @@ int Fifo<T, sz>::free_space() const{
     }
 }
 
-/*
-
-#ifdef VECTOR_LIBRARY_H
-#include "Vector.h"
-
-
-template<> inline
-Vector<double, 3> &Fifo<Vector<double, 3>>::operator[](int i) {
-    return elem[i]; // if the index is larger than the sz, it wraps around;
+template<class T, unsigned int sz>
+Fifo<T, sz>::Fifo(const Fifo &a) {
+    for (int i=0;i<sz;i++)
+        elem[i] = a.elem[i];
+    nextFree=a.nextFree;
+    endPointer=a.endPointer;
 }
 
-template<> inline
-Fifo_STATUS Fifo<Vector<double, 3>>::push(const Vector<double, 3>& item) {
-    if (fifo_status()==Fifo_FULL) {
-        // throw std::length_error("NA"); // throw does not work with arduino :(
-        return Fifo_FULL; // status code
-    }
-    // otherwise:
-    elem[nextFree] = item;
-    if (((nextFree+1) % sz) == endPointer) {
-        nextFree = -1;
-    }
-    else{
-        nextFree = (++nextFree) % sz; // wrap around /:)
-    }
-    return Fifo_GOOD;
+template<class T, unsigned int sz>
+Fifo<T, sz> &Fifo<T, sz>::operator=(const Fifo &a) {
+    for (int i=0;i<sz;i++)
+        elem[i] = a.elem[i];
+    nextFree=a.nextFree;
+    endPointer=a.endPointer;
+    return *this;
+
 }
 
-template<> inline
-Vector<double, 3> Fifo<Vector<double, 3>>::pop() {
-    if (fifo_status()==Fifo_EMPTY) {
-        Vector<double, 3> rv = {Fifo_EMPTY, Fifo_EMPTY, Fifo_EMPTY};
-        return rv;
-    }
-    // otherwise
-    Vector<double, 3> r = {0,0,0};
-    r = {elem[endPointer][0], elem[endPointer][1], elem[endPointer][2]};
-    if (fifo_status()==Fifo_FULL) {
-        nextFree=endPointer;
-    }
-    endPointer = (++endPointer) % sz; // wrap around /:)
-
-    return r;
+template<class T, unsigned int sz>
+Fifo<T, sz>::Fifo(Fifo &&a) noexcept {
+    for (int i=0;i<sz;i++)
+        elem[i] = a.elem[i];
+    nextFree=a.nextFree;
+    endPointer=a.endPointer;
 }
-#endif
-*/
+
+template<class T, unsigned int sz>
+Fifo<T, sz> &Fifo<T, sz>::operator=(Fifo &&a) noexcept {
+    for (int i=0;i<sz;i++)
+        elem[i] = a.elem[i];
+    nextFree=a.nextFree;
+    endPointer=a.endPointer;
+    return *this;
+}
