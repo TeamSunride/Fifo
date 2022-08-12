@@ -1,5 +1,5 @@
 # FIFO
-A FIFO class designed to be used with arduino, but could be used anywhere I suppose
+A FIFO class.
 
 ---
 
