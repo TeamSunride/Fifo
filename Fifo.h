@@ -10,25 +10,27 @@ enum class Fifo_STATUS {
     Fifo_GOOD
 };
 
-template<class T>
+template<class T, unsigned int sz>
 class Fifo { /// essentially a circular fifo
-private:
-    T* elem;
+protected:
+    T elem[sz] = {};
     int nextFree;
     int endPointer;
-    unsigned int sz;
+
 public:
     /**
      * @brief Construct a new Fifo object
      * @param s
      */
-    explicit Fifo(int s);
+    explicit Fifo();
 
-    /**
+    // Removed for now, leads to ambiguous behavior.
+/*    *//**
      * @brief Construct a new Fifo object from an initializer list
      * @param lst
-     */
+     *//*
     Fifo(std::initializer_list<T> lst);
+    */
 
 
     /**
@@ -56,6 +58,14 @@ public:
      * @return Fifo&
      */
     Fifo& operator=(Fifo&& a) noexcept; // move assignment
+
+    /**
+     * @brief C-style cast operator for Fifo. Usage: e.g.
+     * @example Fifo\<double, 32\> g;\n  Fifo\<float, 64\> f = (Fifo\<float, 64\>) g;
+     * @return Fifo_STATUS
+     */
+    template <typename D, unsigned int newsize>
+        explicit operator Fifo<D, newsize>() const;
 
     /**
      * @brief operator []
@@ -144,8 +154,14 @@ public:
      */
     int free_space() const;
 
+    /**
+     * @brief Get the used space in the Fifo
+     * @return The used space in the Fifo
+     */
+    int used_space() const;
 
-    ~Fifo() { delete[] elem; } // destructor
+
+    ~Fifo() = default; // destructor
 };
 
 #include "Fifo.tpp" // implementation file

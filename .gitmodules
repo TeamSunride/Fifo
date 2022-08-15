@@ -1,6 +1,0 @@
-[submodule "Vector"]
-	path = Vector
-	url = https://github.com/robosam2003/Vector.git
-[submodule "lib/Vector"]
-	path = lib/Vector
-	url = https://github.com/robosam2003/Vector

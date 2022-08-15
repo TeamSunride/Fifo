@@ -1,5 +1,5 @@
-#ifndef STATICFifo_H
-#define STATICFifo_H
+#ifndef Fifo_H
+#define Fifo_H
 
 #include <iostream>
 
@@ -10,14 +10,13 @@ enum class Fifo_STATUS {
     Fifo_GOOD
 };
 
-template<class T, unsigned int sz>
+template<class T>
 class Fifo { /// essentially a circular fifo
-protected:
-    T elem[sz];
+private:
+    T* elem;
     int nextFree;
     int endPointer;
-
-public:
+    unsigned int sz;
 public:
     /**
      * @brief Construct a new Fifo object
@@ -146,10 +145,10 @@ public:
     int free_space() const;
 
 
-    ~Fifo() = default; // destructor
+    ~Fifo() { delete[] elem; } // destructor
 };
 
-#include "staticFifo.tpp" // implementation file
+#include "dynamicFifo.tpp" // implementation file
 
 
-#endif //STATICFifo_H
+#endif //Fifo_H
