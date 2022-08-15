@@ -1,5 +1,5 @@
-#ifndef FIFO_H
-#define FIFO_H
+#ifndef DYNAMIC_FIFO_H
+#define DYNAMIC_FIFO_H
 
 #include <iostream>
 
@@ -10,27 +10,25 @@ enum class Fifo_STATUS {
     Fifo_GOOD
 };
 
-template<class T, unsigned int sz>
+template<class T>
 class Fifo { /// essentially a circular fifo
-protected:
-    T elem[sz] = {};
+private:
+    T* elem;
     int nextFree;
     int endPointer;
-
+    unsigned int sz;
 public:
     /**
      * @brief Construct a new Fifo object
      * @param s
      */
-    explicit Fifo();
+    explicit Fifo(int s);
 
-    // Removed for now, leads to ambiguous behavior.
 /*    *//**
      * @brief Construct a new Fifo object from an initializer list
      * @param lst
      *//*
-    Fifo(std::initializer_list<T> lst);
-    */
+    Fifo(std::initializer_list<T> lst);*/
 
 
     /**
@@ -59,13 +57,14 @@ public:
      */
     Fifo& operator=(Fifo&& a) noexcept; // move assignment
 
+
     /**
-     * @brief C-style cast operator for Fifo. Usage: e.g.
-     * @example Fifo\<double, 32\> g;\n  Fifo\<float, 64\> f = (Fifo\<float, 64\>) g;
+     * @brief C-style cast operator for dynamicFifo. Does not resize the fifo. Usage: e.g.
+     * @example Fifo\<double\> g;\n  Fifo\<float\> f = (Fifo\<float\>) g;
      * @return Fifo_STATUS
      */
-    template <typename D, unsigned int newsize>
-        explicit operator Fifo<D, newsize>() const;
+    template <typename D>
+        explicit operator Fifo<D>() const;
 
     /**
      * @brief operator []
@@ -161,10 +160,10 @@ public:
     int used_space() const;
 
 
-    ~Fifo() = default; // destructor
+    ~Fifo() { delete[] elem; } // destructor
 };
 
-#include "Fifo.tpp" // implementation file
+#include "dynamicFifo.tpp" // implementation file
 
 
-#endif //FIFO_H
+#endif //DYNAMIC_FIFO_H

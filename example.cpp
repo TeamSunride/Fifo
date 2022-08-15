@@ -1,12 +1,12 @@
 //
 // Created by robosam2003 on 29/06/2022.
 //
-#include "Fifo.h"
+#include "dynamicFifo.h"
 #include <iostream>
 #include "Vector.h"
 
 int main() {
-
+#ifdef FIFO_H
     // A Fifo is initialized with template <type, size>, so this is a Fifo of 256 floats.
     Fifo<float, 256> exampleFifo;
     int sz = exampleFifo.size();
@@ -59,6 +59,7 @@ int main() {
     Fifo<float, 64> smallFifo2 = smallFifo;
     Fifo<float, 64> smallFifo3 = std::move(smallFifo);
 
+}
 
 #ifdef VECTOR_LIBRARY_H
     // If you are using my Vector class (https://github.com/robosam2003/Vector), be aware that you can use it with Fifos as well!
@@ -74,5 +75,21 @@ int main() {
     std::cout << "e2 Free space: " << e2.free_space() << std::endl;
 
 #endif // VECTOR_LIBRARY_H
+
+#endif // FIFO_H
+
+    // Dynamic Fifo
+#ifdef DYNAMIC_FIFO_H
+    // dynamicFifo is initialised with a template type and a parameter template
+    Fifo<float> e1 (256);
+    e1.push(3.14159);
+
+    // C-style casts. - does not resize the fifo.
+    Fifo<double> e2 = (Fifo<double>) e1;
+
+    (e2.fifo_status() == Fifo_STATUS::Fifo_EMPTY) ? /* Handle the fact that it's empty. */ : e2.pop();
+    std::cout << "e2 Free space: " << e2.free_space() << std::endl;
+
+#endif // DYNAMIC_FIFO_H
 
 }

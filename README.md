@@ -1,5 +1,5 @@
 # FIFO
-A FIFO class.
+A FIFO class that comes in both static and dynamic forms.
 
 --- 
 
@@ -18,6 +18,7 @@ The `push()` function returns a status code of type `Fifo_STATUS`.
 if (exampleFifo.push(item) == Fifo_STATUS::Fifo_FULL) {
     // Handle the fact that the Fifo is full
 }
+// otherwise, the push was successful, continue.
 ```
 
 Popping from a Fifo should be done after a check of the Fifo status to avoid unexpected behaviour.
@@ -34,14 +35,31 @@ See `example.cpp` for a more examples.
 ### Usage with Vector
 Fifo also works well with my [Vector](https://github.com/robosam2003/Vector) class.
 ```cpp
-#include "FIFO.h"
+#include "Fifo.h"
 #include "Vector.h"
-    Fifo<Vector<float, 3>, 64> e1;
-    e1.push(v);
-    
-    // C-style casts for both Vector and Fifo in one cast.
-    Fifo<Vector<double, 6>, 256> e2 = (Fifo<Vector<double, 6>, 256>) e1;
-    
-    (e2.fifo_status() == Fifo_STATUS::Fifo_EMPTY) ? /* Handle the fact that it's empty. */ : e2.pop();
+Fifo<Vector<float, 3>, 64> e1;
+e1.push(v);
+
+// C-style casts for both Vector and Fifo in one cast.
+Fifo<Vector<double, 6>, 256> e2 = (Fifo<Vector<double, 6>, 256>) e1;
+
+(e2.fifo_status() == Fifo_STATUS::Fifo_EMPTY) ? /* Handle the fact that it's empty. */ : e2.pop();
+```
+
+### Dynamic Fifo
+`dynamicFifo` is an identical to `Fifo` in functionality, but uses dynamic memory allocation, not a template.
+It is useful when the size of the Fifo is not known at compile time, or when writing libraries etc. (e.g. [LSM6DSO32](https://github.com/TeamSunride/Arduino-LSM6DSO32))
+
+```cpp
+#include "dynamicFifo.h"
+// dynamicFifo is initialised with a template type and a parameter template
+Fifo<float> e1 (256);
+e1.push(3.14159);
+
+// C-style casts. - does not resize the fifo.
+Fifo<double> e2 = (Fifo<double>) e1;
+
+(e2.fifo_status() == Fifo_STATUS::Fifo_EMPTY) ? /* Handle the fact that it's empty. */ : e2.pop();
+std::cout << "e2 Free space: " << e2.free_space() << std::endl;
 ```
 
