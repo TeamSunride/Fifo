@@ -52,7 +52,7 @@ It is useful when the size of the Fifo is not known at compile time, or when wri
 
 ```cpp
 #include "dynamicFifo.h"
-// dynamicFifo is initialised with a template type and a parameter template
+// dynamicFifo is initialised with a template type and size as a parameter.
 Fifo<float> e1 (256);
 e1.push(3.14159);
 
