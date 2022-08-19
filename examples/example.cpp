@@ -87,7 +87,11 @@ int main() {
     // C-style casts. - does not resize the fifo.
     Fifo<double> e2 = (Fifo<double>) e1;
 
-    (e2.fifo_status() == Fifo_STATUS::Fifo_EMPTY) ? /* Handle the fact that it's empty. */ : e2.pop();
+
+    if (e2.fifo_status() == Fifo_STATUS::Fifo_EMPTY)
+        std::cout<<"It's empty";
+    else
+        e2.pop();
     std::cout << "e2 Free space: " << e2.free_space() << std::endl;
 
 #endif // DYNAMIC_FIFO_H

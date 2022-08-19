@@ -56,11 +56,12 @@ Fifo_STATUS Fifo<T>::push(const T& item) {
     }
     // otherwise:
     elem[nextFree] = item;
-    if (((nextFree+1) % sz) == endPointer) {
+    if (((nextFree+1) % sz) == static_cast<unsigned int>(endPointer)) {
         nextFree = -1;
     }
     else{
-        nextFree = (++nextFree) % sz; // wrap around /:)
+        nextFree++;
+        nextFree = (nextFree) % sz; // wrap around /:)
     }
     return Fifo_STATUS::Fifo_GOOD;
 }
@@ -75,7 +76,8 @@ T Fifo<T>::pop() { /// Note: You should check the status of the fifo before call
     if (fifo_status()==Fifo_STATUS::Fifo_FULL) {
         nextFree=endPointer;
     }
-    endPointer = (++endPointer) % sz; // wrap around /:)
+    endPointer++;
+    endPointer = (endPointer) % sz; // wrap around /:)
     return r;
 }
 

@@ -29,7 +29,7 @@ For this reason, a check before popping is vital.
 (exampleFifo.fifo_status() == Fifo_STATUS::Fifo_EMPTY) ? /* Handle the fact that it's empty. */ : exampleFifo.pop();
 ```
 
-See `example.cpp` for a more examples.
+See `example.cpp` for more examples.
 
 
 ### Usage with Vector
