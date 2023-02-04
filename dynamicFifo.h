@@ -2,14 +2,12 @@
 #define DYNAMIC_FIFO_H
 
 #include <iostream>
+#include "Fifo.h"
+#undef FIFO_H
 
 namespace Fifo {
 
-enum class Fifo_STATUS {
-    Fifo_FULL,
-    Fifo_EMPTY,
-    Fifo_GOOD
-};
+
 
 template<class T>
 class dynamicFifo { /// essentially a circular fifo
@@ -100,7 +98,7 @@ public:
      * @param item
      * @return Fifo Status enum class of state of push (FULL, GOOD, etc)
      */
-    Fifo::Fifo_STATUS push(const T& item);
+    Fifo_STATUS push(const T& item);
 
     /**
      * @brief Pop an item off the Fifo
