@@ -3,11 +3,12 @@
 //
 
 #include "dynamicFifo.h"
+#include "Vector.h"
 
-namespace Fifo {
+
 
 template<class T>
-dynamicFifo<T>::dynamicFifo(int s) {
+Fifo<T>::Fifo(int s) {
     elem = new T[s]; // allocates on the free store (the heap)
     sz = s;
     nextFree=0;
@@ -26,80 +27,29 @@ Fifo<T>::Fifo(std::initializer_list<T> lst) {
 }
 */
 
-// copy constructor
 template<class T>
-dynamicFifo<T>::dynamicFifo(const dynamicFifo &a) {
-    elem = new T[a.sz];
-    sz = a.sz;
-    nextFree = a.nextFree;
-    endPointer = a.endPointer;
-    for (int i=0;i<sz;i++) {
-        elem[i] = a.elem[i];
-    }
-}
-
-// copy assignment operator
-template<class T>
-dynamicFifo<T> &dynamicFifo<T>::operator=(const dynamicFifo &a) {
-    T* p = new T[a.sz];
-    for (int i=0;i<a.sz;i++) {
-        p[i] = a.elem[i];
-    }
-    delete[] elem; // delete old elems
-    elem = p; // assign new elems
-    sz = a.sz;
-    nextFree = a.nextFree;
-    endPointer = a.endPointer;
-    return *this;
-}
-
-// move constructor
-template<class T>
-dynamicFifo<T>::dynamicFifo(dynamicFifo &&a) noexcept {
-    elem = a.elem;
-    sz = a.sz;
-    nextFree = a.nextFree;
-    endPointer = a.endPointer;
-    a.elem = nullptr;
-}
-
-// move assignment operator
-template<class T>
-dynamicFifo<T> &dynamicFifo<T>::operator=(dynamicFifo &&a) noexcept {
-    if (this != &a) {
-        delete[] elem;
-        elem = a.elem;
-        sz = a.sz;
-        nextFree = a.nextFree;
-        endPointer = a.endPointer;
-        a.elem = nullptr;
-    }
-    return *this;
-}
-
-template<class T>
-T &dynamicFifo<T>::operator[](int i) {
+T &Fifo<T>::operator[](int i) {
     return elem[i%sz]; // if the index is larger than the sz, it wraps around;
 }
 
 template<class T>
-T &dynamicFifo<T>::operator[](int i) const {
+T &Fifo<T>::operator[](int i) const {
     return elem[i%sz]; // if the index is larger than the sz, it wraps around;
 }
 
 template<class T>
-T& dynamicFifo<T>::atFifoIndex(int i) {
+T& Fifo<T>::atFifoIndex(int i) {
     return elem[(endPointer+i) % sz];
 }
 
 template<class T>
-T& dynamicFifo<T>::atFifoIndex(int i) const{
+T& Fifo<T>::atFifoIndex(int i) const{
     return elem[(endPointer+i) % sz];
 }
 
 
 template<class T>
-Fifo_STATUS dynamicFifo<T>::push(const T& item) {
+Fifo_STATUS Fifo<T>::push(const T& item) {
     if (fifo_status()==Fifo_STATUS::Fifo_FULL) {
         // throw std::length_error("NA"); // throw does not work with arduino :(
         return Fifo_STATUS::Fifo_FULL; // status code
@@ -117,7 +67,7 @@ Fifo_STATUS dynamicFifo<T>::push(const T& item) {
 }
 
 template<class T>
-T dynamicFifo<T>::pop() { /// Note: You should check the status of the fifo before calling this function
+T Fifo<T>::pop() { /// Note: You should check the status of the fifo before calling this function
     if (fifo_status()==Fifo_STATUS::Fifo_EMPTY) {
         return {0}; // return 0
     }
@@ -133,7 +83,7 @@ T dynamicFifo<T>::pop() { /// Note: You should check the status of the fifo befo
 
 
 template<class T>
-T dynamicFifo<T>::peekBack() const { // GitHub copilot for the win
+T Fifo<T>::peekBack() const { // GitHub copilot for the win
     if (fifo_status()==Fifo_STATUS::Fifo_EMPTY) {
         return {0}; // return 0
     }
@@ -142,7 +92,7 @@ T dynamicFifo<T>::peekBack() const { // GitHub copilot for the win
 }
 
 template<class T>
-T dynamicFifo<T>::peekBack(int i) const {
+T Fifo<T>::peekBack(int i) const {
     if (fifo_status()==Fifo_STATUS::Fifo_EMPTY) {
         return {0}; // return 0
     }
@@ -153,7 +103,7 @@ T dynamicFifo<T>::peekBack(int i) const {
 
 
 template<class T>
-T dynamicFifo<T>::peekFront() const {
+T Fifo<T>::peekFront() const {
     if (fifo_status()==Fifo_STATUS::Fifo_EMPTY) {
         return {0}; // return 0
     }
@@ -162,7 +112,7 @@ T dynamicFifo<T>::peekFront() const {
 }
 
 template<class T>
-T dynamicFifo<T>::peekFront(int i) const {
+T Fifo<T>::peekFront(int i) const {
     if (fifo_status()==Fifo_STATUS::Fifo_EMPTY) {
         return {0}; // return 0
     }
@@ -171,7 +121,7 @@ T dynamicFifo<T>::peekFront(int i) const {
 }
 
 template<class T>
-Fifo_STATUS dynamicFifo<T>::fifo_status() const {
+Fifo_STATUS Fifo<T>::fifo_status() const {
     if (nextFree==endPointer) {
         return Fifo_STATUS::Fifo_EMPTY; // fifo empty
     }
@@ -183,12 +133,12 @@ Fifo_STATUS dynamicFifo<T>::fifo_status() const {
 }
 
 template<class T>
-int dynamicFifo<T>::size() const{
+int Fifo<T>::size() const{
     return sz;
 }
 
 template<class T>
-int dynamicFifo<T>::free_space() const{
+int Fifo<T>::free_space() const{
     if (fifo_status()==Fifo_STATUS::Fifo_FULL){
         return 0;
     }
@@ -202,18 +152,67 @@ int dynamicFifo<T>::free_space() const{
 
 template<class T>
 template<typename D>
-dynamicFifo<T>::operator dynamicFifo<D>() const {
-    dynamicFifo<D> r(sz);
-    for (int i=0;i< this->used_space(); i++) {
+Fifo<T>::operator Fifo<D>() const {
+    Fifo<D> r(sz);
+    for (int i=0;i<used_space();i++) {
         D item = static_cast<D>(elem[i]);
         r.push(item);
     }
     return r;
 }
 
+// copy constructor
 template<class T>
-int dynamicFifo<T>::used_space() const {
-    return sz-free_space();
+Fifo<T>::Fifo(const Fifo &a) {
+    elem = new T[a.sz];
+    sz = a.sz;
+    nextFree = a.nextFree;
+    endPointer = a.endPointer;
+    for (int i=0;i<sz;i++) {
+        elem[i] = a.elem[i];
+    }
 }
 
+// copy assignment operator
+template<class T>
+Fifo<T> &Fifo<T>::operator=(const Fifo &a) {
+    T* p = new T[a.sz];
+    for (int i=0;i<a.sz;i++) {
+        p[i] = a.elem[i];
+    }
+    delete[] elem; // delete old elems
+    elem = p; // assign new elems
+    sz = a.sz;
+    nextFree = a.nextFree;
+    endPointer = a.endPointer;
+    return *this;
+}
+
+// move constructor
+template<class T>
+Fifo<T>::Fifo(Fifo &&a) noexcept {
+    elem = a.elem;
+    sz = a.sz;
+    nextFree = a.nextFree;
+    endPointer = a.endPointer;
+    a.elem = nullptr;
+}
+
+// move assignment operator
+template<class T>
+Fifo<T> &Fifo<T>::operator=(Fifo &&a) noexcept {
+    if (this != &a) {
+        delete[] elem;
+        elem = a.elem;
+        sz = a.sz;
+        nextFree = a.nextFree;
+        endPointer = a.endPointer;
+        a.elem = nullptr;
+    }
+    return *this;
+}
+
+template<class T>
+int Fifo<T>::used_space() const {
+    return sz-free_space();
 }

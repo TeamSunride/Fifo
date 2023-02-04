@@ -3,8 +3,6 @@
 
 #include <iostream>
 
-namespace Fifo {
-
 
 enum class Fifo_STATUS {
     Fifo_FULL,
@@ -12,13 +10,13 @@ enum class Fifo_STATUS {
     Fifo_GOOD
 };
 
-
 template<class T, unsigned int sz>
 class Fifo { /// essentially a circular fifo
 protected:
     T elem[sz] = {};
     int nextFree;
     int endPointer;
+
 public:
     /**
      * @brief Construct a new Fifo object
@@ -28,81 +26,81 @@ public:
 
     // Removed for now, leads to ambiguous behavior.
 /*    *//**
- * @brief Construct a new Fifo object from an initializer list
- * @param lst
- *//*
-Fifo(std::initializer_list<T> lst);
-*/
+     * @brief Construct a new Fifo object from an initializer list
+     * @param lst
+     *//*
+    Fifo(std::initializer_list<T> lst);
+    */
 
 
     /**
      * @brief Copy constructor for Fifo
      * @param a
      */
-    Fifo(const Fifo &a); // copy constructor
+    Fifo(const Fifo& a); // copy constructor
 
     /**
      * @brief Copy assignment constructor for Fifo
      * @param a
      * @return Fifo&
      */
-    Fifo &operator=(const Fifo &a); // copy assignment
+    Fifo& operator=(const Fifo& a); // copy assignment
 
     /**
      * @brief Move constructor for Fifo
      * @param a
      */
-    Fifo(Fifo &&a) noexcept; // move constructor
+    Fifo(Fifo&& a) noexcept ; // move constructor
 
     /**
      * @brief Move assignment constructor for Fifo
      * @param a
      * @return Fifo&
      */
-    Fifo &operator=(Fifo &&a) noexcept; // move assignment
+    Fifo& operator=(Fifo&& a) noexcept; // move assignment
 
     /**
      * @brief C-style cast operator for Fifo. Usage: e.g.
      * @example Fifo\<double, 32\> g;\n  Fifo\<float, 64\> f = (Fifo\<float, 64\>) g;
      * @return Fifo_STATUS
      */
-    template<typename D, unsigned int newsize>
-    explicit operator Fifo<D, newsize>() const;
+    template <typename D, unsigned int newsize>
+        explicit operator Fifo<D, newsize>() const;
 
     /**
      * @brief operator []
      * @param i
      * @return T&
      */
-    T &operator[](int i);
+    T& operator[](int i);
 
     /**
      * @brief operator [] const
      * @param i
      * @return const T&
      */
-    T &operator[](int i) const;
+    T& operator[](int i) const;
 
     /**
      * @brief Get the T at index i of the Fifo
      * @param i
      * @return The T at index i of the Fifo (not elem)
      */
-    T &atFifoIndex(int i);
+    T& atFifoIndex(int i);
 
     /**
      * @brief Get the T at index i of the Fifo
      * @param i
      * @return The T at index i of the Fifo (not elem)
      */
-    T &atFifoIndex(int i) const;
+    T& atFifoIndex(int i) const;
 
     /**
      * @brief Push an item to the Fifo
      * @param item
      * @return Fifo Status enum class of state of push (FULL, GOOD, etc)
      */
-    Fifo_STATUS push(const T &item);
+    Fifo_STATUS push(const T& item);
 
     /**
      * @brief Pop an item off the Fifo
@@ -166,12 +164,7 @@ Fifo(std::initializer_list<T> lst);
     ~Fifo() = default; // destructor
 };
 
-}
-
 #include "Fifo.tpp" // implementation file
 
 
 #endif //FIFO_H
-
-
-

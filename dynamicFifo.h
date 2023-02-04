@@ -3,7 +3,6 @@
 
 #include <iostream>
 
-namespace Fifo {
 
 enum class Fifo_STATUS {
     Fifo_FULL,
@@ -12,9 +11,9 @@ enum class Fifo_STATUS {
 };
 
 template<class T>
-class dynamicFifo { /// essentially a circular fifo
+class Fifo { /// essentially a circular fifo
 private:
-    T *elem;
+    T* elem;
     int nextFree;
     int endPointer;
     unsigned int sz;
@@ -23,40 +22,40 @@ public:
      * @brief Construct a new Fifo object
      * @param s
      */
-    explicit dynamicFifo(int s);
+    explicit Fifo(int s);
 
 /*    *//**
-     * @brief Construct a new dynamicFifo object from an initializer list
+     * @brief Construct a new Fifo object from an initializer list
      * @param lst
      *//*
     Fifo(std::initializer_list<T> lst);*/
 
 
     /**
-     * @brief Copy constructor for dynamicFifo
+     * @brief Copy constructor for Fifo
      * @param a
      */
-    dynamicFifo(const dynamicFifo &a); // copy constructor
+    Fifo(const Fifo& a); // copy constructor
 
     /**
-     * @brief Copy assignment constructor for dynamicFifo
+     * @brief Copy assignment constructor for Fifo
      * @param a
      * @return Fifo&
      */
-    dynamicFifo &operator=(const dynamicFifo &a); // copy assignment
+    Fifo& operator=(const Fifo& a); // copy assignment
 
     /**
      * @brief Move constructor for Fifo
      * @param a
      */
-    dynamicFifo(dynamicFifo &&a) noexcept; // move constructor
+    Fifo(Fifo&& a) noexcept ; // move constructor
 
     /**
      * @brief Move assignment constructor for Fifo
      * @param a
      * @return Fifo&
      */
-    dynamicFifo &operator=(dynamicFifo &&a) noexcept; // move assignment
+    Fifo& operator=(Fifo&& a) noexcept; // move assignment
 
 
     /**
@@ -64,8 +63,8 @@ public:
      * @example Fifo\<double\> g;\n  Fifo\<float\> f = (Fifo\<float\>) g;
      * @return Fifo_STATUS
      */
-    template<typename D>
-    explicit operator dynamicFifo<D>() const;
+    template <typename D>
+        explicit operator Fifo<D>() const;
 
     /**
      * @brief operator []
@@ -100,7 +99,7 @@ public:
      * @param item
      * @return Fifo Status enum class of state of push (FULL, GOOD, etc)
      */
-    Fifo::Fifo_STATUS push(const T& item);
+    Fifo_STATUS push(const T& item);
 
     /**
      * @brief Pop an item off the Fifo
@@ -160,14 +159,11 @@ public:
      */
     int used_space() const;
 
-    ~dynamicFifo() { delete[] elem; } // destructor
-    };
 
-} // namespace Fifo
+    ~Fifo() { delete[] elem; } // destructor
+};
 
 #include "dynamicFifo.tpp" // implementation file
 
 
-
 #endif //DYNAMIC_FIFO_H
-
