@@ -13,13 +13,14 @@ protected:
     int nextFree;
     int endPointer;
 
-    enum class Fifo_STATUS {
+
+
+public:
+    enum Fifo_STATUS {
         Fifo_FULL,
         Fifo_EMPTY,
         Fifo_GOOD
     };
-
-public:
     /**
      * @brief Construct a new Fifo object
      * @param s

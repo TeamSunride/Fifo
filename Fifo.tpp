@@ -96,7 +96,7 @@ T& Fifo<T, sz>::atFifoIndex(int i) const{
 }
 
 template<class T, unsigned int sz>
-Fifo_STATUS Fifo<T, sz>::push(const T& item) { // returns the status of the fifo
+typename Fifo<T, sz>::Fifo_STATUS Fifo<T, sz>::push(const T& item) { // returns the status of the fifo
     if (fifo_status()==Fifo_STATUS::Fifo_FULL) {
         // throw std::length_error("NA"); // throw does not work with arduino :(
         return Fifo_STATUS::Fifo_FULL; // status code
@@ -166,7 +166,7 @@ T Fifo<T, sz>::peekFront(int i) const {
 }
 
 template<class T, unsigned int sz>
-Fifo_STATUS Fifo<T, sz>::fifo_status() const {
+typename Fifo<T, sz>::Fifo_STATUS Fifo<T, sz>::fifo_status() const {
     if (nextFree==endPointer) {
         return Fifo_STATUS::Fifo_EMPTY; // fifo empty
     }

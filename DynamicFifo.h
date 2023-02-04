@@ -4,28 +4,26 @@
 #include <iostream>
 
 
-
-
 template<class T>
-class Fifo { /// essentially a circular fifo
+class DynamicFifo { /// essentially a circular fifo
 private:
     T* elem;
     int nextFree;
     int endPointer;
     unsigned int sz;
 
+
+public:
     enum Fifo_STATUS {
         Fifo_FULL,
         Fifo_EMPTY,
         Fifo_GOOD
     };
-
-public:
     /**
      * @brief Construct a new Fifo object
      * @param s
      */
-    explicit Fifo(int s);
+    explicit DynamicFifo(int s);
 
 /*    *//**
      * @brief Construct a new Fifo object from an initializer list
@@ -35,39 +33,39 @@ public:
 
 
     /**
-     * @brief Copy constructor for Fifo
+     * @brief Copy constructor for DynamicFifo
      * @param a
      */
-    Fifo(const Fifo& a); // copy constructor
+    DynamicFifo(const DynamicFifo& a); // copy constructor
 
     /**
-     * @brief Copy assignment constructor for Fifo
+     * @brief Copy assignment constructor for DynamicFifo
      * @param a
-     * @return Fifo&
+     * @return DynamicFifo&
      */
-    Fifo& operator=(const Fifo& a); // copy assignment
+    DynamicFifo& operator=(const DynamicFifo& a); // copy assignment
 
     /**
-     * @brief Move constructor for Fifo
+     * @brief Move constructor for DynamicFifo
      * @param a
      */
-    Fifo(Fifo&& a) noexcept ; // move constructor
+    DynamicFifo(DynamicFifo&& a) noexcept ; // move constructor
 
     /**
-     * @brief Move assignment constructor for Fifo
+     * @brief Move assignment constructor for DynamicFifo
      * @param a
-     * @return Fifo&
+     * @return DynamicFifo&
      */
-    Fifo& operator=(Fifo&& a) noexcept; // move assignment
+    DynamicFifo& operator=(DynamicFifo&& a) noexcept; // move assignment
 
 
     /**
-     * @brief C-style cast operator for dynamicFifo. Does not resize the fifo. Usage: e.g.
-     * @example Fifo\<double\> g;\n  Fifo\<float\> f = (Fifo\<float\>) g;
+     * @brief C-style cast operator for DynamicFifo. Does not resize the fifo. Usage: e.g.
+     * @example DynamicFifo\<double\> g;\n  DynamicFifo\<float\> f = (DynamicFifo\<float\>) g;
      * @return Fifo_STATUS
      */
     template <typename D>
-        explicit operator Fifo<D>() const;
+        explicit operator DynamicFifo<D>() const;
 
     /**
      * @brief operator []
@@ -84,9 +82,9 @@ public:
     T& operator[](int i) const;
 
     /**
-     * @brief Get the T at index i of the Fifo
+     * @brief Get the T at index i of the DynamicFifo
      * @param i
-     * @return The T at index i of the Fifo (not elem)
+     * @return The T at index i of the DynamicFifo (not elem)
      */
     T& atFifoIndex(int i);
 
@@ -163,7 +161,7 @@ public:
     int used_space() const;
 
 
-    ~Fifo() { delete[] elem; } // destructor
+    ~DynamicFifo() { delete[] elem; } // destructor
 };
 
 #include "dynamicFifo.tpp" // implementation file

@@ -47,12 +47,12 @@ Fifo<Vector<double, 6>, 256> e2 = (Fifo<Vector<double, 6>, 256>) e1;
 ```
 
 ### Dynamic Fifo
-`dynamicFifo` is an identical to `Fifo` in functionality, but uses dynamic memory allocation, not a template.
+`DynamicFifo` is an identical to `Fifo` in functionality, but uses dynamic memory allocation, not a template.
 It is useful when the size of the Fifo is not known at compile time, or when writing libraries etc. (e.g. [LSM6DSO32](https://github.com/TeamSunride/Arduino-LSM6DSO32))
 
 ```cpp
-#include "dynamicFifo.h"
-// dynamicFifo is initialised with a template type and size as a parameter.
+#include "DynamicFifo.h"
+// DynamicFifo is initialised with a template type and size as a parameter.
 Fifo<float> e1 (256);
 e1.push(3.14159);
 
