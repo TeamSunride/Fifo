@@ -4,11 +4,7 @@
 #include <iostream>
 
 
-enum class Fifo_STATUS {
-    Fifo_FULL,
-    Fifo_EMPTY,
-    Fifo_GOOD
-};
+
 
 template<class T, unsigned int sz>
 class Fifo { /// essentially a circular fifo
@@ -16,6 +12,12 @@ protected:
     T elem[sz] = {};
     int nextFree;
     int endPointer;
+
+    enum class Fifo_STATUS {
+        Fifo_FULL,
+        Fifo_EMPTY,
+        Fifo_GOOD
+    };
 
 public:
     /**
