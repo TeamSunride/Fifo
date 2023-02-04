@@ -4,7 +4,7 @@
 
 #include "Fifo.h"
 
-
+namespace Fifo {
 
 template<class T, unsigned int sz>
 Fifo<T, sz>::Fifo() {
@@ -203,4 +203,4 @@ int Fifo<T, sz>::used_space() const {
 
 
 
-
+} // namespace Fifo
