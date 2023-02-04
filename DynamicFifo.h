@@ -2,7 +2,7 @@
 #define DYNAMIC_FIFO_H
 
 #include <iostream>
-
+#include "Shared.h"
 
 template<class T>
 class DynamicFifo { /// essentially a circular fifo
@@ -14,11 +14,6 @@ private:
 
 
 public:
-    enum Fifo_STATUS {
-        Fifo_FULL,
-        Fifo_EMPTY,
-        Fifo_GOOD
-    };
     /**
      * @brief Construct a new Fifo object
      * @param s
@@ -164,7 +159,7 @@ public:
     ~DynamicFifo() { delete[] elem; } // destructor
 };
 
-#include "dynamicFifo.tpp" // implementation file
+#include "DynamicFifo.tpp" // implementation file
 
 
 #endif //DYNAMIC_FIFO_H

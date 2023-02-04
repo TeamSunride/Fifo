@@ -2,8 +2,7 @@
 #define FIFO_H
 
 #include <iostream>
-
-
+#include "Shared.h"
 
 
 template<class T, unsigned int sz>
@@ -16,11 +15,6 @@ protected:
 
 
 public:
-    enum Fifo_STATUS {
-        Fifo_FULL,
-        Fifo_EMPTY,
-        Fifo_GOOD
-    };
     /**
      * @brief Construct a new Fifo object
      * @param s

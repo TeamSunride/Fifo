@@ -49,7 +49,7 @@ T& DynamicFifo<T>::atFifoIndex(int i) const{
 
 
 template<class T>
-typename DynamicFifo<T>::Fifo_STATUS DynamicFifo<T>::push(const T& item) {
+Fifo_STATUS DynamicFifo<T>::push(const T& item) {
     if (fifo_status()==Fifo_STATUS::Fifo_FULL) {
         // throw std::length_error("NA"); // throw does not work with arduino :(
         return Fifo_STATUS::Fifo_FULL; // status code
@@ -121,7 +121,7 @@ T DynamicFifo<T>::peekFront(int i) const {
 }
 
 template<class T>
-typename DynamicFifo<T>::Fifo_STATUS DynamicFifo<T>::fifo_status() const {
+Fifo_STATUS DynamicFifo<T>::fifo_status() const {
     if (nextFree==endPointer) {
         return Fifo_STATUS::Fifo_EMPTY; // fifo empty
     }
