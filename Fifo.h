@@ -1,9 +1,6 @@
 #ifndef FIFO_H
 #define FIFO_H
 
-#include <iostream>
-
-
 
 
 template<class T, unsigned int sz>

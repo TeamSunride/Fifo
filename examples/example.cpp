@@ -1,10 +1,12 @@
 //
 // Created by robosam2003 on 29/06/2022.
 //
-//#include "DynamicFifo.h"
+#include "DynamicFifo.h"
 #include "Fifo.h"
-#include <iostream>
+
+#ifdef VECTOR_LIBRARY_H // if you use my Vector library, that is compatible with this library as well! Fifos of Vectors are possible!
 #include "Vector.h"
+#endif
 
 int main() {
 #ifdef FIFO_H

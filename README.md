@@ -33,7 +33,7 @@ See `example.cpp` for more examples.
 
 
 ### Usage with Vector
-Fifo also works well with my [Vector](https://github.com/robosam2003/Vector) class.
+Fifo also works well with my [Vector](https://github.com/TeamSunride/Vector) class.
 ```cpp
 #include "Fifo.h"
 #include "Vector.h"
