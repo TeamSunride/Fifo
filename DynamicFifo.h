@@ -1,7 +1,6 @@
 #ifndef DYNAMIC_FIFO_H
 #define DYNAMIC_FIFO_H
 
-#include <iostream>
 #include "Shared.h"
 
 template<class T>

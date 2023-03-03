@@ -2,7 +2,14 @@
 // Created by robosam2003 on 29/06/2022.
 //
 #include "DynamicFifo.h"
-#include "Fifo.h"
+//#include "Fifo.h"
+
+#ifndef ARDUINO_ARCH_AVR
+#include <iostream>
+#endif
+
+// if iostream is defined
+
 
 #ifdef VECTOR_LIBRARY_H // if you use my Vector library, that is compatible with this library as well! Fifos of Vectors are possible!
 #include "Vector.h"
@@ -21,7 +28,7 @@ int main() {
         float item = i*3.14159;
 
         // Push while checking if the fifo is full or not.
-        if (exampleFifo.push(item) == exampleFifo.Fifo_FULL) {
+        if (exampleFifo.push(item) == Fifo_STATUS::Fifo_FULL) {
             std::cout << "Fifo is full!\n";
             std::cout << "Free space: " << exampleFifo.free_space() << std::endl; // confirmation using free_space();
             break;
@@ -35,7 +42,7 @@ int main() {
     int countPops = 0;
     std::cout<< "Data popped from exampleFifo:\n";
     while (true) {
-        if (exampleFifo.fifo_status() != exampleFifo.Fifo_EMPTY) {
+        if (exampleFifo.fifo_status() != Fifo_STATUS::Fifo_EMPTY) {
             std::cout << exampleFifo.pop() << std::endl;
             countPops++;
         }
@@ -84,14 +91,14 @@ int main() {
     // Dynamic Fifo
 #ifdef DYNAMIC_FIFO_H
     // DynamicFifo is initialised with a template type and a parameter template
-    DynamicFifo<float> e1 (256);
-    e1.push(3.14159);
+    DynamicFifo<float> e1(256);
+    e1.push(3.145);
 
     // C-style casts. - does not resize the fifo.
     DynamicFifo<double> e2 = (DynamicFifo<double>) e1;
 
 
-    if (e2.fifo_status() == e2.Fifo_EMPTY)
+    if (e2.fifo_status() == Fifo_STATUS::Fifo_EMPTY)
         std::cout<<"It's empty";
     else
         e2.pop();
